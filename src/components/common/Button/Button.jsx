@@ -16,7 +16,7 @@ export default Button;
 
 const Container = styled.button`
   margin: 0 auto;
-  width: 340px;
+  width: 354px;
   height: 41px;
   background-color: ${(props) => (props.disabled ? "#C5C5C7" : "#4f78ff")};
   border: none;

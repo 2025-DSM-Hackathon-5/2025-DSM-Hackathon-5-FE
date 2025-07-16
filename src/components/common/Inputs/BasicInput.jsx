@@ -4,7 +4,7 @@ function BasicInput(props) {
   return (
     <Container>
       <Label>{props.label}</Label>
-      <Input placeholder={props.placeholder} maxLength={props.maxLength} />
+      <Input placeholder={props.placeholder} maxLength={props.maxLength} onChange={props.onChange} value={props.text} />
     </Container>
   );
 }

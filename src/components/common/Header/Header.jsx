@@ -19,6 +19,7 @@ function Header(props) {
 export default Header;
 
 const Container = styled.div`
+  margin-top: 50px;
   width: 354px;
   height: 55px;
   padding: 0 20px;
