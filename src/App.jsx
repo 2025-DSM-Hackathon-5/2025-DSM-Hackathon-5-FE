@@ -1,40 +1,33 @@
-import styled from "styled-components";
-import SystemStatus from "./assets/images/SystemProps/TopStatusBar.png";
-import HomeIndicator from "./assets/images/SystemProps/HomeIndicator.png";
-import Login from "./page/Login/Login";
-import AISetting from "./page/aiSetting/AISetting";
+import styled, { ThemeProvider } from "styled-components";
+import AIProfile from "./page/AISetting/AIProfile";
+import { Router } from "./router";
+import GlobalStyle from "../GlobalStyle";
 
 function App() {
   return (
-    <AppContainer>
-      <SystemPropImage src={SystemStatus} style={{ position: "absolute", top: 0 }} />
-      <MainContent>
-        <AISetting />
-      </MainContent>
-      <SystemPropImage src={HomeIndicator} style={{ position: "absolute", bottom: 0 }} />
-    </AppContainer>
+    <Container>
+      <AppContainer>
+        <GlobalStyle />
+        <Router />
+      </AppContainer>
+    </Container>
   );
 }
 
 export default App;
 
-// Styled Components
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  justify-self: center;
+  background-color: #dfdfdf;
+`;
+
 const AppContainer = styled.div`
   position: relative;
-  margin: 0 auto;
-  padding: 0;
-  width: 394px;
-  height: 852px;
-  background-color: #ffffff;
-`;
-
-const MainContent = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const SystemPropImage = styled.img`
-  position: "absolute";
-  margin: 0;
-  padding: 0;
+  max-width: 394px;
+  width: 100%;
+  height: 100%;
+  justify-self: center;
+  background-color: #fff;
 `;

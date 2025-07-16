@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import LeftArrow from "../../../assets/images/header/LeftArrow.svg";
 import MenuIcon from "../../../assets/images/header/MenuIcon.svg";
+import { useNavigate } from "react-router-dom";
 
-function Header(props) {
-  const goBackBtnClickEventHandler = () => {};
+function Header({ pageName }) {
+  const navigate = useNavigate();
+  const goBackBtnClickEventHandler = () => {
+    navigate(-1);
+  };
 
   const menuBtnClickEventHandler = () => {};
 
   return (
     <Container>
       <GoBackBtn src={LeftArrow} onClick={goBackBtnClickEventHandler} />
-      <PageName>{props.pageName}</PageName>
+      <PageName>{pageName}</PageName>
       <MenuBtn src={MenuIcon} onClick={menuBtnClickEventHandler} />
     </Container>
   );
@@ -19,19 +23,22 @@ function Header(props) {
 export default Header;
 
 const Container = styled.div`
-  margin-top: 50px;
-  width: 354px;
-  height: 55px;
-  padding: 0 20px;
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #fff;
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
 `;
 
 const GoBackBtn = styled.img`
   width: 14px;
   height: 27px;
+  cursor: pointer;
 
   &:active {
     transform: scale(0.97);
@@ -44,14 +51,14 @@ const PageName = styled.p`
   padding: 0;
   font-size: 16px;
   line-height: 20px;
-  font-family: "SUIT";
   font-weight: 600;
-  color: black;
+  color: #3f3f46;
 `;
 
 const MenuBtn = styled.img`
   width: 18px;
   height: 12px;
+  cursor: pointer;
 
   &:active {
     transform: scale(0.97);
