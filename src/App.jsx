@@ -12,12 +12,11 @@ export default App;
 
 // Styled Components
 const AppContainer = styled.div`
+  margin: 0;
+  padding: 0;
   width: 394px;
-  margin: 0 auto;
-  background-color: #ffffff;
   height: 852px;
-  border: 1px solid #ddd;
-  overflow-y: auto;
+  background-color: #ffffff;
 `;
 
 const MainContent = styled.div`
