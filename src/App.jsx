@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import SystemStatus from "./assets/images/SystemProps/TopStatusBar.png";
 import HomeIndicator from "./assets/images/SystemProps/HomeIndicator.png";
-import Signup from "./page/signup/Signup";
+import LoadingScreen from "./components/Loading";
 
 function App() {
   return (
     <AppContainer>
       <SystemPropImage src={SystemStatus} style={{ position: "absolute", top: 0 }} />
       <MainContent>
-        <Signup />
+        <LoadingScreen />
       </MainContent>
       <SystemPropImage src={HomeIndicator} style={{ position: "absolute", bottom: 0 }} />
     </AppContainer>
