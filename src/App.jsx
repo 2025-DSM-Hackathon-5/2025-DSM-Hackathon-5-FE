@@ -1,15 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Button from './components/button'
+import styled from "styled-components";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <Button/>
-  )
+    <AppContainer>
+      <MainContent></MainContent>
+    </AppContainer>
+  );
 }
 
 export default App
+
+// Styled Components
+const AppContainer = styled.div`
+  margin: 0;
+  padding: 0;
+  width: 394px;
+  height: 852px;
+  background-color: #ffffff;
+`;
+
+const MainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+`;
