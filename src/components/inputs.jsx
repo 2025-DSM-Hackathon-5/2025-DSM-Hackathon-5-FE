@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { FiSearch } from "react-icons/fi";
 
 function Inputs() {
   return (
