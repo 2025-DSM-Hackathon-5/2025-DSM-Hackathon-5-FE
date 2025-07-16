@@ -19,6 +19,7 @@ export default App;
 
 // Styled Components
 const AppContainer = styled.div`
+  position: relative;
   margin: 0 auto;
   padding: 0;
   width: 394px;
