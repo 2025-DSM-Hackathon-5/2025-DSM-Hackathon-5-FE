@@ -8,12 +8,11 @@ export default function Text() {
       {}
       <BubbleWrapper>
         <BubbleRow>
-            <Avatar />
-            <BubbleGray>집에 가고싶다 그치?</BubbleGray>
-            <BubbleBlue>집에 가고싶다 그치?</BubbleBlue>
+          <Avatar />
+          <BubbleGray>집에 가고싶다 그치?</BubbleGray>
+          <BubbleBlue>집에 가고싶다 그치?</BubbleBlue>
         </BubbleRow>
       </BubbleWrapper>
-
     </Container>
   );
 }
@@ -48,13 +47,20 @@ const BubbleGray = styled(BubbleBase)`
   background-color: #f1f1f1;
   align-self: flex-start;
   border-radius: 16px 16px 16px 4px;
+  color: black;
+  font-family: "SUIT";
+  font-weight: 500;
+  font-size: 14px;
 `;
 
 const BubbleBlue = styled(BubbleBase)`
   background-color: #2977f5;
-  color: white;
   align-self: flex-end;
   border-radius: 16px 16px 4px 16px;
+  color: white;
+  font-family: "SUIT";
+  font-weight: 500;
+  font-size: 14px;
 `;
 
 const BubbleRow = styled.div`
@@ -73,4 +79,3 @@ const Avatar = styled.div`
   background-position: center;
   flex-shrink: 0;
 `;
-

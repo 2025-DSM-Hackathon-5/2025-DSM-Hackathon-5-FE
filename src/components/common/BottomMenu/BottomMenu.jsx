@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import MenuBtn from "./MenuBtn";
 
-function NavBar() {
+function BottomMenu() {
   return (
     <Container>
       <ButtonOuterContainer>
@@ -15,6 +15,8 @@ function NavBar() {
 }
 
 const Container = styled.div`
+  position: absolute;
+  bottom: 0;
   margin: 0;
   padding: 0;
   width: 394px;
@@ -30,4 +32,4 @@ const ButtonOuterContainer = styled.div`
   flex-direction: "row";
 `;
 
-export default NavBar;
+export default BottomMenu;
