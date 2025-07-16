@@ -2,13 +2,14 @@ import styled from "styled-components";
 import SystemStatus from "./assets/images/SystemProps/TopStatusBar.png";
 import HomeIndicator from "./assets/images/SystemProps/HomeIndicator.png";
 import Login from "./page/Login/Login";
+import AISetting from "./page/aiSetting/AISetting";
 
 function App() {
   return (
     <AppContainer>
       <SystemPropImage src={SystemStatus} style={{ position: "absolute", top: 0 }} />
       <MainContent>
-        <Login />
+        <AISetting />
       </MainContent>
       <SystemPropImage src={HomeIndicator} style={{ position: "absolute", bottom: 0 }} />
     </AppContainer>
