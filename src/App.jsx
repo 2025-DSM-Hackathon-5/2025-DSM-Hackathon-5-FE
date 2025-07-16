@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 function App() {
   return (
     <AppContainer>
@@ -8,7 +9,7 @@ function App() {
   );
 }
 
-export default App
+export default App;
 
 // Styled Components
 const AppContainer = styled.div`
