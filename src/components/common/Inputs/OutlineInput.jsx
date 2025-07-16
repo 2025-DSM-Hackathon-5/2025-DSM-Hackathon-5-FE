@@ -21,6 +21,7 @@ const Container = styled.div`
 `;
 
 const Label = styled.p`
+  margin: 0px;
   font-size: 14px;
   color: black;
   margin-bottom: 6px;
@@ -60,5 +61,5 @@ const Text = styled.p`
   color: #c5c5c7;
   position: absolute;
   right: 10px;
-  top: 17px;
+  top: 25px;
 `;

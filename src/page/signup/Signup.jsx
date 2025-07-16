@@ -29,18 +29,18 @@ function Signup() {
           label={"닉네임"}
           placeholder={"1자에서 8자"}
           maxLength={8}
-          text={data.accountId}
+          text={data.name}
           onChange={(e) => {
-            dataChangeEventHandler("accountId", e.target.value);
+            dataChangeEventHandler("name", e.target.value);
           }}
         />
         <BasicInput
           label={"아이디"}
           placeholder={"6자에서 12자"}
           maxLength={12}
-          text={data.name}
+          text={data.accountId}
           onChange={(e) => {
-            dataChangeEventHandler("name", e.target.value);
+            dataChangeEventHandler("accountId", e.target.value);
           }}
         />
         <PasswordInput
