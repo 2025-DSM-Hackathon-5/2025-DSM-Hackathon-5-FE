@@ -1,22 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/common/Header/Header";
-import {
-  //  useSendChat,
-  useGetChatHistory,
-  //   useGetChatStream,
-} from "../../apis/chat";
+import { useGetChatHistory, useSendChat } from "../../apis/chat";
 
 function Chat() {
-  const [chatList, setChatList] = useState([]);
-
+  const { data: chatList = [], isLoading, error } = useGetChatHistory();
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); // 전송 중 상태
+
+  const sendChatMutation = useSendChat({
+    onMutate: () => setLoading(true),
+    onSuccess: async () => {
+      setInput(""); // 입력창 비우기
+    },
+    onError: () => {
+      alert("메시지 전송에 실패했어요.");
+    },
+    onSettled: () => setLoading(false),
+  });
+
+  const handleSendMessage = () => {
+    if (!input.trim()) return;
+
+    const messagePayload = {
+      text: input,
+      my: true, // 보낸 사람 표시
+    };
+
+    sendChatMutation.mutate(messagePayload);
+  };
 
   return (
     <Wrapper>
       <Header pageName="키라 아빠카게" nav="/ai-profile" />
+
       <ScrollArea>
+        {isLoading && <LoadingBox>로딩 중...</LoadingBox>}
+        {error && <LoadingBox>에러가 발생했어요!</LoadingBox>}
+
         {chatList.map(({ my, text }, idx) => (
           <BubbleBox key={idx} my={my}>
             {!my && (
@@ -25,6 +46,7 @@ function Chat() {
             <MessageBubble my={my}>{text}</MessageBubble>
           </BubbleBox>
         ))}
+
         {loading && (
           <BubbleBox my={false}>
             <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_8wijf2foCSJMbq8XVI9LJ8OdNzw1Gp4AR2jdbEdqL9Z-hKR7EdqBkOnEc0FKUylKIAGAbraJBm7ozDfjeIGGuCLRSym9AQ5BiKaJsA" />
@@ -40,7 +62,9 @@ function Chat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
-          <SendButton disabled={loading}>보내기</SendButton>
+          <SendButton disabled={loading} onClick={handleSendMessage}>
+            보내기
+          </SendButton>
         </Input>
       </InputBox>
     </Wrapper>
@@ -49,7 +73,16 @@ function Chat() {
 
 export default Chat;
 
-// 아래는 스타일 컴포넌트 (기존과 동일)
+const LoadingBox = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #ccc;
+`;
+
 const Input = styled.div`
   width: 100%;
   display: flex;

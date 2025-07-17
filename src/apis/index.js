@@ -41,36 +41,3 @@ refreshInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
-instance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (axios.isAxiosError(error) && error.response) {
-      const { status } = error.response;
-      if (status === 401) {
-        const refreshToken = cookie.get("refresh_token");
-        try {
-          await axios
-            .post(`${BASEURL}user/refresh`, null, {
-              headers: {
-                "X-Refresh-Token": `${refreshToken}`,
-              },
-            })
-            .then((response) => {
-              const data = response.data;
-              cookie.set("access_token", data.accessToken);
-              cookie.set("refresh_token", data.refreshToken);
-            })
-            .catch(() => {
-              window.location.href = "/";
-              cookie.remove("access_token");
-              cookie.remove("refresh_token");
-            });
-        } catch (refreshError) {
-          return Promise.reject(refreshError);
-        }
-      }
-    }
-    return Promise.reject(error);
-  }
-);

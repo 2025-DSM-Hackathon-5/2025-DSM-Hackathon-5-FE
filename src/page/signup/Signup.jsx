@@ -6,7 +6,6 @@ import LeftArrow from "../../assets/images/header/LeftArrow.svg";
 import Button from "../../components/common/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller, useWatch } from "react-hook-form";
-import { signup } from "../../apis/auth";
 
 function Signup() {
   const navigate = useNavigate();
@@ -24,17 +23,13 @@ function Signup() {
   });
   const passwordValue = useWatch({ name: "password", control });
 
+  // Signup.tsx 내부 onSubmit 수정
   const onSubmit = async (formData) => {
     const { passwordCheck, ...signupData } = formData;
 
-    try {
-      await signup(signupData);
-      await new Promise((res) => setTimeout(res, 100)); // 쿠키 반영 대기
-      navigate("/tips");
-    } catch (error) {
-      console.error(error);
-      alert("회원가입 실패");
-    }
+    navigate("/ai-setting", {
+      state: { signupData }, // 아이디, 이름, 비밀번호 전달
+    });
   };
 
   return (

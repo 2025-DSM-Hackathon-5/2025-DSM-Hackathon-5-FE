@@ -24,6 +24,7 @@ function Login() {
   });
 
   const onSubmit = async (formData) => {
+    console.log("로그인 시도", formData);
     try {
       setErrorMessage(""); // 초기화
       await login(formData);

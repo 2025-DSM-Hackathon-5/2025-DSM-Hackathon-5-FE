@@ -2,27 +2,61 @@ import styled from "styled-components";
 import BannerImage from "../../assets/images/banner/AISetting.png";
 import OutlineInput from "../../components/common/Inputs/OutlineInput";
 import TextAreaInput from "../../components/common/Inputs/TextAreaInput";
-import AddImageBtn from "../../assets/images/button/addImageBtn.png";
 import Button from "../../components/common/Button/Button";
+import AddImageBtn from "../../assets/images/button/addImageBtn.png";
+import { useLocation, useNavigate } from "react-router-dom";
+import { signup } from "../../apis/auth";
+import { useState } from "react";
 
 function AISetting() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { signupData } = location.state || {}; // Signup에서 넘긴 데이터
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSignup = async () => {
+    try {
+      if (!signupData) throw new Error("회원가입 정보가 없습니다.");
+
+      const finalPayload = {
+        ...signupData,
+        aiName: name,
+        aiDescription: description,
+      };
+
+      await signup(finalPayload);
+      await new Promise((res) => setTimeout(res, 100));
+      navigate("/tips");
+    } catch (err) {
+      console.error(err);
+      alert("회원가입 실패");
+    }
+  };
+
   return (
     <Container>
       <Banner src={BannerImage} />
-
       <InnerContainer>
         <AddImageButton src={AddImageBtn} />
-        <OutlineInput title="이름" placeholder="ex. 아빠" maxLength={10} />
+        <OutlineInput
+          title="이름"
+          placeholder="ex. 아빠"
+          maxLength={10}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <TextAreaInput
           title="설명"
-          placeholder={
-            "캐릭터의 특징, 행동, 감정 표현에 대해서 써주시면 개성있는 캐릭터를 만들 수 있어요! \n ex. 아빠는 다정한 성격을 갖고 계시며, 온갖 레시피를 알고 계셔서 설명을 잘 해주신다."
-          }
-          maxLength={10}
+          placeholder="캐릭터 설명 작성..."
+          maxLength={200}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </InnerContainer>
       <ButtonBox>
-        <Button text={"회원가입"} />
+        <Button text="회원가입" onClick={handleSignup} />
       </ButtonBox>
     </Container>
   );
