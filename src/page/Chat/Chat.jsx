@@ -1,30 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/common/Header/Header";
+import {
+  //  useSendChat,
+  useGetChatHistory,
+  //   useGetChatStream,
+} from "../../apis/chat";
 
 function Chat() {
-  const data = [
-    { my: true, text: "키라 아빠카게!" },
-    { my: false, text: "어 불렀냐 죠타로?" },
-  ];
+  const [chatList, setChatList] = useState([]);
+
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
   return (
     <Wrapper>
-      <Header pageName="키라 아빠카게" />
+      <Header pageName="키라 아빠카게" nav="/ai-profile" />
       <ScrollArea>
-        {data.map(({ my, text }) => (
-          <BubbleBox my={my}>
+        {chatList.map(({ my, text }, idx) => (
+          <BubbleBox key={idx} my={my}>
             {!my && (
               <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_8wijf2foCSJMbq8XVI9LJ8OdNzw1Gp4AR2jdbEdqL9Z-hKR7EdqBkOnEc0FKUylKIAGAbraJBm7ozDfjeIGGuCLRSym9AQ5BiKaJsA" />
             )}
-
             <MessageBubble my={my}>{text}</MessageBubble>
           </BubbleBox>
         ))}
+        {loading && (
+          <BubbleBox my={false}>
+            <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_8wijf2foCSJMbq8XVI9LJ8OdNzw1Gp4AR2jdbEdqL9Z-hKR7EdqBkOnEc0FKUylKIAGAbraJBm7ozDfjeIGGuCLRSym9AQ5BiKaJsA" />
+            <MessageBubble my={false}>답변 생성 중...</MessageBubble>
+          </BubbleBox>
+        )}
       </ScrollArea>
+
       <InputBox>
         <Input>
-          <TextInput placeholder="메시지 입력..." />
-          <SendButton>보내기</SendButton>
+          <TextInput
+            placeholder="메시지 입력..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
+          <SendButton disabled={loading}>보내기</SendButton>
         </Input>
       </InputBox>
     </Wrapper>
@@ -33,6 +49,7 @@ function Chat() {
 
 export default Chat;
 
+// 아래는 스타일 컴포넌트 (기존과 동일)
 const Input = styled.div`
   width: 100%;
   display: flex;

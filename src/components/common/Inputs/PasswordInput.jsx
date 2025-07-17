@@ -11,13 +11,29 @@ function PasswordInput(props) {
   };
 
   return (
-    <Container>
-      <Label>{props.label}</Label>
-      <Input placeholder={props.placeholder} maxLength={props.maxLength} type={showPassword ? "text" : "password"} onChange={props.onChange} value={props.text} />
-      <Icon onClick={toggleVisibility} src={showPassword ? Show : Hide} />
-    </Container>
+    <Wrapper>
+      <Container>
+        <Label>{props.label}</Label>
+        <Input
+          placeholder={props.placeholder}
+          maxLength={props.maxLength}
+          type={showPassword ? "text" : "password"}
+          onChange={props.onChange}
+          value={props.value}
+        />
+        <Icon onClick={toggleVisibility} src={showPassword ? Show : Hide} />
+      </Container>
+      <ErrorText>{props.error}</ErrorText>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 6px;
+`;
 
 const Container = styled.div`
   position: relative;
@@ -69,6 +85,12 @@ const Icon = styled.img`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ErrorText = styled.p`
+  color: red;
+  font-size: 12px;
+  margin: 0;
 `;
 
 export default PasswordInput;

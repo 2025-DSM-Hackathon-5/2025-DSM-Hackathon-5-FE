@@ -3,13 +3,15 @@ import LeftArrow from "../../../assets/images/header/LeftArrow.svg";
 import MenuIcon from "../../../assets/images/header/MenuIcon.svg";
 import { useNavigate } from "react-router-dom";
 
-function Header({ pageName }) {
+function Header({ pageName, nav }) {
   const navigate = useNavigate();
   const goBackBtnClickEventHandler = () => {
     navigate(-1);
   };
 
-  const menuBtnClickEventHandler = () => {};
+  const menuBtnClickEventHandler = () => {
+    navigate(nav);
+  };
 
   return (
     <Container>

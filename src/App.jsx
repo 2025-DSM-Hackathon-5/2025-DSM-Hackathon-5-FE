@@ -1,5 +1,4 @@
 import styled, { ThemeProvider } from "styled-components";
-import AIProfile from "./page/AISetting/AIProfile";
 import { Router } from "./router";
 import GlobalStyle from "../GlobalStyle";
 

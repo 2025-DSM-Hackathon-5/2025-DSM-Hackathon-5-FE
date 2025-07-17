@@ -6,6 +6,7 @@ import AISetting from "./page/aiSetting/AISetting";
 import Chat from "./page/Chat/Chat";
 import Tips from "./page/Tips/Tips";
 import CreateTips from "./page/Tips/CreateTips";
+import EditAISetting from "./page/AISetting/EditAISetting";
 
 export const Router = () => {
   return (
@@ -17,7 +18,8 @@ export const Router = () => {
         <Route path="/ai-setting" element={<AISetting />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/tips" element={<Tips />} />
-        <Route path="/create-tips" element={<CreateTips />} />
+        <Route path="/add-tips" element={<CreateTips />} />
+        <Route path="/edit-ai-setting" element={<EditAISetting />} />
       </Routes>
     </BrowserRouter>
   );

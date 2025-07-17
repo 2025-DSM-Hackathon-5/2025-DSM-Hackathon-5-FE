@@ -2,12 +2,33 @@ import styled from "styled-components";
 
 function BasicInput(props) {
   return (
-    <Container>
-      <Label>{props.label}</Label>
-      <Input placeholder={props.placeholder} maxLength={props.maxLength} onChange={props.onChange} value={props.text} />
-    </Container>
+    <Wrapper>
+      <Container>
+        <Label>{props.label}</Label>
+        <Input
+          placeholder={props.placeholder}
+          maxLength={props.maxLength}
+          onChange={props.onChange}
+          value={props.value}
+        />
+      </Container>
+      <ErrorText>{props.error}</ErrorText>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+const ErrorText = styled.p`
+  color: red;
+  font-size: 12px;
+  margin: 0;
+`;
 
 const Container = styled.div`
   margin: 0 auto;

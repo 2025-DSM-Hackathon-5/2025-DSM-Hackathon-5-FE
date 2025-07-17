@@ -12,16 +12,16 @@ const Icons = {
   Chatting: [ChattingDisabled, ChattingEnabled, "채팅"],
   Tips: [TipsDisabled, TipsEnabled, "팁스"],
   AddTips: [AddTipsDisabled, AddTipsEnabled, "팁스 추가"],
-  Mypage: [MypageDisabled, MypageEnabled, "마이페이지"]
+  Mypage: [MypageDisabled, MypageEnabled, "마이페이지"],
 };
 
 function MenuBtn(props) {
   const icon = Icons[props.type];
 
   return (
-    <Button>
-      <Image src={props.disabled ? icon[0] : icon[1]} />
-      <Text disabled={props.disabled}>{icon[2]}</Text>
+    <Button onClick={props.onClick}>
+      <Image src={props.disabled ? icon[1] : icon[0]} />
+      <Text disabled={!props.disabled}>{icon[2]}</Text>
     </Button>
   );
 }

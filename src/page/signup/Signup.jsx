@@ -4,66 +4,133 @@ import BasicInput from "../../components/common/Inputs/BasicInput";
 import PasswordInput from "../../components/common/Inputs/PasswordInput";
 import LeftArrow from "../../assets/images/header/LeftArrow.svg";
 import Button from "../../components/common/Button/Button";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm, Controller, useWatch } from "react-hook-form";
+import { signup } from "../../apis/auth";
 
 function Signup() {
-  const [data, setData] = useState({ accountId: "", name: "", password: "", passwordCheck: "" });
+  const navigate = useNavigate();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      accountId: "",
+      name: "",
+      password: "",
+      passwordCheck: "",
+    },
+  });
+  const passwordValue = useWatch({ name: "password", control });
 
-  const someInputIsBlank = data.accountId === "" || data.name === "" || data.password === "" || data.passwordCheck === "";
+  const onSubmit = async (formData) => {
+    const { passwordCheck, ...signupData } = formData;
 
-  const dataChangeEventHandler = (name, text) => {
-    setData({ ...data, [name]: text });
+    try {
+      await signup(signupData);
+      await new Promise((res) => setTimeout(res, 100)); // 쿠키 반영 대기
+      navigate("/tips");
+    } catch (error) {
+      console.error(error);
+      alert("회원가입 실패");
+    }
   };
-
-  const signupButtonClickHandler = () => {};
-
-  const goBackBtnClickEventHandler = () => {};
 
   return (
     <Container>
       <Banner src={BannerImage} />
-      <GoBackBtn src={LeftArrow} onClick={goBackBtnClickEventHandler} />
+      <GoBackBtn src={LeftArrow} onClick={() => navigate(-1)} />
 
-      <InputContainer>
-        <BasicInput
-          label={"닉네임"}
-          placeholder={"1자에서 8자"}
-          maxLength={8}
-          text={data.name}
-          onChange={(e) => {
-            dataChangeEventHandler("name", e.target.value);
+      <InputContainer onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          control={control}
+          name="name"
+          rules={{
+            required: "닉네임을 입력해주세요",
+            minLength: { value: 1, message: "최소 6자 입력" },
+            maxLength: { value: 8, message: "최대 12자 입력" },
           }}
+          render={({ field: { onChange, value } }) => (
+            <BasicInput
+              label={"닉네임"}
+              placeholder={"1자에서 8자"}
+              maxLength={8}
+              onChange={onChange}
+              value={value}
+              error={errors.name?.message}
+            />
+          )}
         />
-        <BasicInput
-          label={"아이디"}
-          placeholder={"6자에서 12자"}
-          maxLength={12}
-          text={data.accountId}
-          onChange={(e) => {
-            dataChangeEventHandler("accountId", e.target.value);
+        <Controller
+          control={control}
+          name="accountId"
+          rules={{
+            required: "아이디를 입력해주세요",
+            minLength: { value: 6, message: "최소 6자 입력" },
+            maxLength: { value: 12, message: "최대 12자 입력" },
           }}
+          render={({ field: { onChange, value } }) => (
+            <BasicInput
+              label={"아이디"}
+              placeholder={"6자에서 12자"}
+              maxLength={12}
+              value={value}
+              onChange={onChange}
+              error={errors.accountId?.message}
+            />
+          )}
         />
-        <PasswordInput
-          label={"비밀번호"}
-          placeholder={"8자에서 16자"}
-          maxLength={16}
-          text={data.password}
-          onChange={(e) => {
-            dataChangeEventHandler("password", e.target.value);
+        {errors.accountId && <ErrorText>{errors.accountId.message}</ErrorText>}
+        <Controller
+          control={control}
+          name="password"
+          rules={{
+            required: "비밀번호를 입력해주세요",
+            minLength: { value: 8, message: "최소 8자 입력" },
+            maxLength: { value: 16, message: "최대 16자 입력" },
           }}
+          render={({ field: { onChange, value } }) => (
+            <PasswordInput
+              label={"비밀번호"}
+              placeholder={"8자에서 16자"}
+              maxLength={16}
+              value={value}
+              onChange={onChange}
+              error={errors.password?.message}
+            />
+          )}
         />
-        <PasswordInput
-          label={"비밀번호 확인"}
-          placeholder={"8자에서 16자"}
-          maxLength={16}
-          text={data.passwordCheck}
-          onChange={(e) => {
-            dataChangeEventHandler("passwordCheck", e.target.value);
+        <Controller
+          control={control}
+          name="passwordCheck"
+          rules={{
+            required: "비밀번호를 입력해주세요",
+            minLength: { value: 8, message: "최소 8자 입력" },
+            maxLength: { value: 16, message: "최대 16자 입력" },
+            validate: (value) =>
+              value === passwordValue || "비밀번호가 일치하지 않습니다.",
           }}
+          render={({ field: { onChange, value } }) => (
+            <PasswordInput
+              label={"비밀번호 확인"}
+              placeholder={"8자에서 16자"}
+              maxLength={16}
+              value={value}
+              onChange={onChange}
+              error={errors.passwordCheck?.message}
+            />
+          )}
         />
       </InputContainer>
-
-      <Button onClick={signupButtonClickHandler} text={"회원가입"} disabled={someInputIsBlank} />
+      <ButtonBox>
+        <Button
+          text={"회원가입"}
+          type="submit"
+          disabled={isSubmitting}
+          onClick={handleSubmit(onSubmit)}
+        />
+      </ButtonBox>
     </Container>
   );
 }
@@ -77,7 +144,7 @@ const Container = styled.div`
 
 const Banner = styled.img``;
 
-const InputContainer = styled.div`
+const InputContainer = styled.form`
   margin-top: 30px;
   margin-bottom: 145px;
   display: flex;
@@ -96,4 +163,18 @@ const GoBackBtn = styled.img`
     transform: scale(0.97);
     opacity: 0.7;
   }
+`;
+
+const ButtonBox = styled.div`
+  width: 100%;
+  position: absolute;
+  padding: 20px;
+  bottom: 0;
+  left: 0;
+`;
+
+const ErrorText = styled.p`
+  color: red;
+  font-size: 12px;
+  margin: 0;
 `;

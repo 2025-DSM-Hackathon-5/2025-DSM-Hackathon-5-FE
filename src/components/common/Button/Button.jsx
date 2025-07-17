@@ -1,13 +1,17 @@
 import styled from "styled-components";
 
-function Button(props) {
+function Button({ onClick, disabled, text, type }) {
   const buttonClickEventHandler = () => {
-    props.onClick();
+    onClick();
   };
 
   return (
-    <Container onClick={buttonClickEventHandler} disabled={props.disabled}>
-      <Text disabled={props.disabled}>{props.text}</Text>
+    <Container
+      type={type}
+      onClick={buttonClickEventHandler}
+      disabled={disabled}
+    >
+      <Text disabled={disabled}>{text}</Text>
     </Container>
   );
 }

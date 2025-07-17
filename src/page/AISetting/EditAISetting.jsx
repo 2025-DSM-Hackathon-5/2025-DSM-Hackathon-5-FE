@@ -1,17 +1,12 @@
 import styled from "styled-components";
-import BannerImage from "../../assets/images/banner/AISetting.png";
 import OutlineInput from "../../components/common/Inputs/OutlineInput";
 import TextAreaInput from "../../components/common/Inputs/TextAreaInput";
-import AddImageBtn from "../../assets/images/button/addImageBtn.png";
 import Button from "../../components/common/Button/Button";
 
-function AISetting() {
+function EditAISetting() {
   return (
     <Container>
-      <Banner src={BannerImage} />
-
       <InnerContainer>
-        <AddImageButton src={AddImageBtn} />
         <OutlineInput title="이름" placeholder="ex. 아빠" maxLength={10} />
         <TextAreaInput
           title="설명"
@@ -22,13 +17,13 @@ function AISetting() {
         />
       </InnerContainer>
       <ButtonBox>
-        <Button text={"회원가입"} />
+        <Button text="저장하기" />
       </ButtonBox>
     </Container>
   );
 }
 
-export default AISetting;
+export default EditAISetting;
 
 const ButtonBox = styled.div`
   width: 100%;

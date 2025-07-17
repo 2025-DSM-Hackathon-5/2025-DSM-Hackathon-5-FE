@@ -6,7 +6,7 @@ import Button from "../../components/common/Button/Button";
 function AIProfile() {
   return (
     <Wrapper>
-      <Header pageName="키라 아빠카게" />
+      <Header pageName="키라 아빠카게" nav="/ai-setting" />
       <ScrollArea>
         <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_8wijf2foCSJMbq8XVI9LJ8OdNzw1Gp4AR2jdbEdqL9Z-hKR7EdqBkOnEc0FKUylKIAGAbraJBm7ozDfjeIGGuCLRSym9AQ5BiKaJsA" />
         <Title>키라 아빠카게</Title>
