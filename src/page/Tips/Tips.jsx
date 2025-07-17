@@ -1,42 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import LikeDisabled from "../../assets/images/like/LikeDisabled.png";
+import LikeEnabled from "../../assets/images/like/LikeEnabled.png";
 import BottomMenu from "../../components/common/BottomMenu/BottomMenu";
-
-const videos = [
-  {
-    id: 1,
-    backgroundImage:
-      "url('https://i.pinimg.com/236x/22/d0/f4/22d0f468fae0323aa854b54bd6128075.jpg')",
-    profileImage:
-      "https://i.pinimg.com/236x/22/d0/f4/22d0f468fae0323aa854b54bd6128075.jpg",
-    profileName: "닉네임1",
-    caption: "계란찜은 이렇게 만들면 되는거에요",
-    likeNum: 1004,
-  },
-  {
-    id: 2,
-    backgroundImage:
-      "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMdhoOEhflpa6Q_Cff4X90EteqzMKAjiPfkA&s')",
-    profileImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMdhoOEhflpa6Q_Cff4X90EteqzMKAjiPfkA&s",
-    profileName: "닉네임2",
-    caption: "맛있는 김치찌개 비법 대공개!",
-    likeNum: 2300,
-  },
-  {
-    id: 3,
-    backgroundImage:
-      "url('https://i.pinimg.com/originals/50/4e/25/504e25328e621d6dc4e2d21e99667b4a.jpg')",
-    profileImage:
-      "https://i.pinimg.com/originals/50/4e/25/504e25328e621d6dc4e2d21e99667b4a.jpg",
-    profileName: "닉네임3",
-    caption: "초간단 샌드위치 만들기",
-    likeNum: 500,
-  },
-];
+import { useGetVideos } from "../../apis/video";
+import ReactPlayer from "react-player";
 
 function Tips() {
+  const { data } = useGetVideos();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollTimeout = useRef(null);
 
@@ -47,7 +19,7 @@ function Tips() {
 
     if (e.deltaY > 0) {
       // 아래로 스크롤 -> 다음 영상
-      setCurrentIndex((prev) => Math.min(prev + 1, videos.length - 1));
+      setCurrentIndex((prev) => Math.min(prev + 1, data.videos.length - 1));
     } else if (e.deltaY < 0) {
       // 위로 스크롤 -> 이전 영상
       setCurrentIndex((prev) => Math.max(prev - 1, 0));
@@ -62,23 +34,23 @@ function Tips() {
 
   return (
     <Wrapper onWheel={handleWheel}>
-      <Container
-        style={{ backgroundImage: videos[currentIndex].backgroundImage }}
-      >
-        <BottomBar>
-          <VideoInfo>
-            <ProfileBox>
-              <ProfileImage src={videos[currentIndex].profileImage} />
-              <ProfileName>{videos[currentIndex].profileName}</ProfileName>
-            </ProfileBox>
-            <Caption>{videos[currentIndex].caption}</Caption>
-          </VideoInfo>
-          <LikeBox>
-            <Icon src={LikeDisabled} />
-            <LikeNum>{videos[currentIndex].likeNum}</LikeNum>
-          </LikeBox>
-        </BottomBar>
-      </Container>
+      {data && data.videos[currentIndex] && (
+        <Container>
+          <BottomBar>
+            <VideoInfo>
+              <ProfileBox>
+                <ProfileImage src={data.videos[currentIndex].writerProfile} />
+                <ProfileName>{data.videos[currentIndex].writer}</ProfileName>
+              </ProfileBox>
+              <Caption>{data.videos[currentIndex].title}</Caption>
+            </VideoInfo>
+            <LikeBox>
+              <Icon src={data.videos[currentIndex].isLiked ? LikeEnabled : LikeDisabled} />
+              <LikeNum>{data.videos[currentIndex].likeCnt}</LikeNum>
+            </LikeBox>
+          </BottomBar>
+        </Container>
+      )}
       <BottomMenu />
     </Wrapper>
   );
