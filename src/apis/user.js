@@ -21,7 +21,7 @@ export const useChangeUserInfo = (option, formData) => {
     mutationFn: async () => {
       const { data } = await instance.patch(`${router}/detail`, formData);
       return data;
-    },
+    }
   });
 };
 
@@ -32,7 +32,7 @@ export const useDeleteUser = (option) => {
     mutationFn: async () => {
       const { data } = await instance.delete(router);
       return data;
-    },
+    }
   });
 };
 
@@ -43,7 +43,7 @@ export const useChangePassword = (option, formData) => {
     mutationFn: async () => {
       const { data } = await instance.patch(`${router}/password`, formData);
       return data;
-    },
+    }
   });
 };
 
@@ -55,6 +55,6 @@ export const useGetUserInfo = (option) => {
       const { data } = await instance.get(router);
       return data;
     },
-    ...option,
+    ...option
   });
 };

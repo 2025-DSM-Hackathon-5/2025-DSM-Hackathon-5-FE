@@ -60,6 +60,18 @@ export const useGetMyVideos = (options) => {
   });
 };
 
+// 내가 좋아요한 릴스 조회
+export const useGetLikedVideos = (options) => {
+  return useQuery({
+    queryKey: ["likedVideos"],
+    queryFn: async () => {
+      const { data } = await instance.get(`${router}/liked`);
+      return data;
+    },
+    ...options
+  });
+};
+
 // 좋아요 토글
 export const useToggleVideoLike = (options) => {
   return useMutation({
