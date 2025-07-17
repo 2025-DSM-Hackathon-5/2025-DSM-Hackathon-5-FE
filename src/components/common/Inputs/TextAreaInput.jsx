@@ -4,7 +4,12 @@ const TextAreaInput = (props) => {
   return (
     <Container>
       <Label>{props.title}</Label>
-      <TextArea placeholder={props.placeholder} maxLength={500} />
+      <TextArea
+        placeholder={props.placeholder}
+        maxLength={500}
+        value={props.value}
+        onChange={props.onChange}
+      />
     </Container>
   );
 };

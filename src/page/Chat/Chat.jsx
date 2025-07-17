@@ -1,17 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/common/Header/Header";
-import { useGetChatHistory, useSendChat } from "../../apis/chat";
+import {
+  useGetChatHistory,
+  useSendChat,
+  useGetChatStream,
+  useGetChatPreset,
+} from "../../apis/chat";
 
 function Chat() {
+  const { data: profileInfo } = useGetChatPreset();
+  console.log("정보", profileInfo);
   const { data: chatList = [], isLoading, error } = useGetChatHistory();
+
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false); // 전송 중 상태
+  const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const [streamedMessage, setStreamedMessage] = useState(null); // 실시간 메시지 표시용
+
+  const scrollRef = useRef(null);
 
   const sendChatMutation = useSendChat({
     onMutate: () => setLoading(true),
-    onSuccess: async () => {
-      setInput(""); // 입력창 비우기
+    onSuccess: (data) => {
+      setInput("");
+      setSessionId(data.sessionId);
     },
     onError: () => {
       alert("메시지 전송에 실패했어요.");
@@ -19,40 +32,68 @@ function Chat() {
     onSettled: () => setLoading(false),
   });
 
+  const { data: chatStreamData } = useGetChatStream(sessionId, {
+    enabled: !!sessionId,
+  });
+
+  // chatStreamData가 도착하면 실시간 메시지로 반영
+  useEffect(() => {
+    if (chatStreamData?.content) {
+      setStreamedMessage({
+        role: "assistant",
+        content: chatStreamData.content,
+      });
+    }
+  }, [chatStreamData]);
+
+  // 채팅 추가될 때마다 자동 스크롤
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [chatList, streamedMessage, loading]);
+
   const handleSendMessage = () => {
     if (!input.trim()) return;
-
-    const messagePayload = {
-      text: input,
-      my: true, // 보낸 사람 표시
-    };
-
-    sendChatMutation.mutate(messagePayload);
+    sendChatMutation.mutate({ message: input });
   };
 
   return (
     <Wrapper>
-      <Header pageName="키라 아빠카게" nav="/ai-profile" />
+      <Header pageName={profileInfo.name} nav="/ai-profile" />
 
       <ScrollArea>
         {isLoading && <LoadingBox>로딩 중...</LoadingBox>}
         {error && <LoadingBox>에러가 발생했어요!</LoadingBox>}
 
-        {chatList.map(({ my, text }, idx) => (
-          <BubbleBox key={idx} my={my}>
-            {!my && (
-              <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_8wijf2foCSJMbq8XVI9LJ8OdNzw1Gp4AR2jdbEdqL9Z-hKR7EdqBkOnEc0FKUylKIAGAbraJBm7ozDfjeIGGuCLRSym9AQ5BiKaJsA" />
-            )}
-            <MessageBubble my={my}>{text}</MessageBubble>
+        {[...(chatList.history || [])]
+          .reverse()
+          .map(({ role, content }, idx) => (
+            <BubbleBox key={idx} my={role === "user"}>
+              {role === "assistant" && (
+                <ProfileImage src={profileInfo.profile} />
+              )}
+              <MessageBubble my={role === "user"}>{content}</MessageBubble>
+            </BubbleBox>
+          ))}
+
+        {/* 실시간으로 표시될 assistant 메시지 */}
+        {streamedMessage && (
+          <BubbleBox my={false}>
+            <ProfileImage src={profileInfo.profile} />
+            <MessageBubble my={false}>{streamedMessage.content}</MessageBubble>
           </BubbleBox>
-        ))}
+        )}
 
         {loading && (
           <BubbleBox my={false}>
-            <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_8wijf2foCSJMbq8XVI9LJ8OdNzw1Gp4AR2jdbEdqL9Z-hKR7EdqBkOnEc0FKUylKIAGAbraJBm7ozDfjeIGGuCLRSym9AQ5BiKaJsA" />
+            <ProfileImage src={profileInfo.profile} />
             <MessageBubble my={false}>답변 생성 중...</MessageBubble>
           </BubbleBox>
         )}
+
+        {/* 스크롤 유지용 빈 div */}
+        <div ref={scrollRef} />
       </ScrollArea>
 
       <InputBox>
@@ -91,6 +132,7 @@ const Input = styled.div`
   gap: 8px;
   border-radius: 100px;
   overflow: hidden;
+  background-color: white;
 `;
 
 const TextInput = styled.input`

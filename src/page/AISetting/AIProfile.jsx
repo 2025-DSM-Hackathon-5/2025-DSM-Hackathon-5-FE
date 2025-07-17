@@ -2,21 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../../components/common/Header/Header";
 import Button from "../../components/common/Button/Button";
+import { useNavigate } from "react-router-dom";
+import { useGetChatPreset } from "../../apis/chat";
 
 function AIProfile() {
+  const navigate = useNavigate();
+  const { data: profileInfo } = useGetChatPreset();
   return (
     <Wrapper>
-      <Header pageName="키라 아빠카게" nav="/ai-setting" />
+      <Header pageName={profileInfo.name} nav="/edit-ai-setting" />
       <ScrollArea>
-        <ProfileImage src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7_8wijf2foCSJMbq8XVI9LJ8OdNzw1Gp4AR2jdbEdqL9Z-hKR7EdqBkOnEc0FKUylKIAGAbraJBm7ozDfjeIGGuCLRSym9AQ5BiKaJsA" />
-        <Title>키라 아빠카게</Title>
+        <ProfileImage src={profileInfo.profile} />
+        <Title>{profileInfo.name}</Title>
         <Divider />
         <CaptionBox>
           <CaptionTitle>상세 설명</CaptionTitle>
-          <Caption>어쩌고 저쩌고</Caption>
+          <Caption>{profileInfo.prompt}</Caption>
         </CaptionBox>
         <ButtonBox>
-          <Button text="이어서 대화하기" />
+          <Button onClick={() => navigate("/chat")} text="이어서 대화하기" />
         </ButtonBox>
       </ScrollArea>
     </Wrapper>

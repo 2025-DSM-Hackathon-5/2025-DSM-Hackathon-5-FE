@@ -1,4 +1,4 @@
-import { authInstance, instance } from ".";
+import { authInstance } from ".";
 import { saveToken } from "./cookie";
 
 const router = "/user";
@@ -9,6 +9,10 @@ export const login = async (formData) => {
 };
 
 export const signup = async (formData) => {
-  const { data } = await authInstance.post(`${router}/signUp`, formData);
+  const { data } = await authInstance.post(`${router}/signup`, formData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   saveToken(data.accessToken, data.refreshToken);
 };

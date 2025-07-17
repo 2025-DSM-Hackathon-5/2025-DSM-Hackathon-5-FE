@@ -4,7 +4,12 @@ const OutlineInput = (props) => {
   return (
     <Container>
       <Label>{props.title}</Label>
-      <Input placeholder={props.placeholder} maxLength={props.maxLength} />
+      <Input
+        placeholder={props.placeholder}
+        maxLength={props.maxLength}
+        value={props.value}
+        onChange={props.onChange}
+      />
       <Text>{`0/${props.maxLength}`}</Text>
     </Container>
   );

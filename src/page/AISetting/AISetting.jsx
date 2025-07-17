@@ -4,35 +4,36 @@ import OutlineInput from "../../components/common/Inputs/OutlineInput";
 import TextAreaInput from "../../components/common/Inputs/TextAreaInput";
 import Button from "../../components/common/Button/Button";
 import AddImageBtn from "../../assets/images/button/addImageBtn.png";
-import { useLocation, useNavigate } from "react-router-dom";
-import { signup } from "../../apis/auth";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useSaveChatPreset } from "../../apis/chat";
 
 function AISetting() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { signupData } = location.state || {}; // Signup에서 넘긴 데이터
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSignup = async () => {
-    try {
-      if (!signupData) throw new Error("회원가입 정보가 없습니다.");
-
-      const finalPayload = {
-        ...signupData,
-        aiName: name,
-        aiDescription: description,
-      };
-
-      await signup(finalPayload);
-      await new Promise((res) => setTimeout(res, 100));
+  const { mutate: saveChatPreset, isLoading } = useSaveChatPreset({
+    onSuccess: () => {
       navigate("/tips");
-    } catch (err) {
+    },
+    onError: (err) => {
       console.error(err);
-      alert("회원가입 실패");
+      alert("프리셋 저장 실패");
+    },
+  });
+
+  const handleSavePreset = () => {
+    if (!name || !description) {
+      alert("이름과 설명을 모두 입력해주세요.");
+      return;
     }
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("systemPrompt", description);
+
+    saveChatPreset(formData);
   };
 
   return (
@@ -56,7 +57,11 @@ function AISetting() {
         />
       </InnerContainer>
       <ButtonBox>
-        <Button text="회원가입" onClick={handleSignup} />
+        <Button
+          text={isLoading ? "저장 중..." : "회원가입"}
+          onClick={handleSavePreset}
+          disabled={isLoading}
+        />
       </ButtonBox>
     </Container>
   );
