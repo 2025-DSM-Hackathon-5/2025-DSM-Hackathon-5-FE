@@ -44,9 +44,11 @@ export const useSaveChatPreset = (options) => {
   return useMutation({
     mutationFn: async (formData) => {
       const { data } = await instance.post("/chat/preset", formData, {
-        headers: {
-          "Content-Type": `multipart/form-data`,
-        },
+        // 'Content-Type' 헤더는 직접 지정하지 않는 게 좋음
+        // axios가 FormData 인식하고 자동으로 multipart boundary 처리함
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
       });
       return data;
     },

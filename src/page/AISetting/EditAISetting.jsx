@@ -54,20 +54,13 @@ function EditAISetting() {
       return;
     }
 
-    const payload = {
-      name: name,
-      prompt: desc,
-    };
-
     const formData = new FormData();
-    const jsonData = JSON.stringify(payload);
-    const systemPrompt = new Blob([jsonData], { type: "application/json" });
-    formData.append("systemPrompt", systemPrompt);
-    formData.append("profile", imageFile);
-
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
+    formData.append("name", name);
+    formData.append("prompt", desc);
+    if (imageFile) {
+      formData.append("profile", imageFile);
     }
+
     savePresetMutation.mutate(formData);
   };
 

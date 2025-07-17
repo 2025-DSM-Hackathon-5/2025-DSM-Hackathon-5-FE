@@ -10,9 +10,6 @@ export const authInstance = axios.create({
 export const instance = axios.create({
   baseURL: BASEURL,
   timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 export const refreshInstance = axios.create({
