@@ -40,11 +40,14 @@ export const useGetChatHistory = (options) => {
 };
 
 // AI 커스터마이징 생성/수정
-// apis/chat.js
 export const useSaveChatPreset = (options) => {
   return useMutation({
     mutationFn: async (formData) => {
-      const { data } = await instance.post("/chat/preset", formData);
+      const { data } = await instance.post("/chat/preset", formData, {
+        headers: {
+          "Content-Type": `multipart/form-data`,
+        },
+      });
       return data;
     },
     ...options,

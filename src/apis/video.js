@@ -6,11 +6,11 @@ const router = "/video";
 // 릴스 업로드
 export const useUploadVideo = (options) => {
   return useMutation({
-    ...options,
     mutationFn: async (formData) => {
-      const { data } = await instance.post(`${router}`, formData);
+      const { data } = await instance.post(`/reels/upload`, formData);
       return data;
-    }
+    },
+    ...options,
   });
 };
 
@@ -21,7 +21,7 @@ export const useDeleteVideo = (options) => {
     mutationFn: async (videoId) => {
       const { data } = await instance.delete(`${router}/${videoId}`);
       return data;
-    }
+    },
   });
 };
 
@@ -32,7 +32,7 @@ export const useEditVideo = (options) => {
     mutationFn: async ({ videoId, payload }) => {
       const { data } = await instance.patch(`${router}/${videoId}`, payload);
       return data;
-    }
+    },
   });
 };
 
@@ -44,7 +44,7 @@ export const useGetVideos = (options) => {
       const { data } = await instance.get(`${router}`);
       return data;
     },
-    ...options
+    ...options,
   });
 };
 
@@ -56,7 +56,7 @@ export const useGetMyVideos = (options) => {
       const { data } = await instance.get(`${router}/my`);
       return data;
     },
-    ...options
+    ...options,
   });
 };
 
@@ -79,6 +79,6 @@ export const useToggleVideoLike = (options) => {
     mutationFn: async (videoId) => {
       const { data } = await instance.put(`${router}/${videoId}`);
       return data;
-    }
+    },
   });
 };
